@@ -527,6 +527,15 @@ class Play(object):
             task_vars.update(vars)
             if original_file:
                 task_vars['_original_file'] = original_file
+                try:
+                    s = original_file.replace(task_vars['playbook_dir']+'/roles/','')
+                    i = s.find('/')
+                    if i > 0:
+                        task_vars['this_role'] = s[:i]
+                    else:
+                        task_vars['this_role'] = s
+                except:
+                    task_vars['this_role'] = ''
 
             if 'include' in x:
                 tokens = split_args(str(x['include']))
