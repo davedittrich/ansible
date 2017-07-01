@@ -127,6 +127,12 @@ from ansible.errors import AnsibleFileNotFound, AnsibleLookupError, AnsibleUndef
 from ansible.plugins.lookup import LookupBase
 from ansible.constants import mk_boolean as boolean
 
+try:
+    from __main__ import display
+except ImportError:
+    from ansible.utils.display import Display
+    display = Display()
+
 class LookupModule(LookupBase):
 
     def run(self, terms, variables, **kwargs):
@@ -143,8 +149,11 @@ class LookupModule(LookupBase):
             for term in terms:
                 if isinstance(term, dict):
                     files = term.get('files', [])
+                    display.debug('first_found: files={}'.format(files))
                     paths = term.get('paths', [])
+                    display.debug('first_found: paths={}'.format(paths))
                     skip  = boolean(term.get('skip', False))
+                    display.debug('first_found: skip={}'.format(skip))
 
                     filelist = files
                     if isinstance(files, string_types):
