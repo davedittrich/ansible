@@ -174,8 +174,11 @@ class LookupModule(LookupBase):
                     else:
                         for path in pathlist:
                             for fn in filelist:
-                                f = os.path.join(path, fn)
-                                total_search.append(f)
+                                try:
+                                    f = os.path.join(path, fn)
+                                    total_search.append(f)
+                                except (AttributeError):
+                                    continue
                 else:
                     total_search.append(term)
         else:
